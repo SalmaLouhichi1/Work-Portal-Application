@@ -10,7 +10,6 @@ import {
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import { setMode } from "state";
-import profileImage from "assets/profile.jpg";
 import {
   AppBar,
   Button,
@@ -23,6 +22,8 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
             backgroundColor={theme.palette.background.alt}
             borderRadius="9px"
             gap="3rem"
-            p="0.1rem 1.5rem"
+            p="1.1rem 2.5rem"
           >
             <InputBase placeholder="Search..." />
             <IconButton>
@@ -61,16 +62,16 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
         </FlexBetween>
 
         {/* RIGHT SIDE */}
-        <FlexBetween gap="1.5rem">
+        <FlexBetween gap="2.5rem">
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
-              <DarkModeOutlined sx={{ fontSize: "25px" }} />
+              <DarkModeOutlined sx={{ fontSize: "35px" }} />
             ) : (
-              <LightModeOutlined sx={{ fontSize: "25px" }} />
+              <LightModeOutlined sx={{ fontSize: "35px" }} />
             )}
           </IconButton>
           <IconButton>
-            <SettingsOutlined sx={{ fontSize: "25px" }} />
+            <SettingsOutlined sx={{ fontSize: "35px" }} />
           </IconButton>
 
           <FlexBetween>
@@ -84,32 +85,24 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
                 gap: "1rem",
               }}
             >
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="32px"
-                width="32px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-              />
+
               <Box textAlign="left">
                 <Typography
                   fontWeight="bold"
-                  fontSize="0.85rem"
+                  fontSize="1.2rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
                   {user.name}
                 </Typography>
                 <Typography
-                  fontSize="0.75rem"
+                  fontSize="1rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {user.occupation}
+                  {user.role}
                 </Typography>
               </Box>
               <ArrowDropDownOutlined
-                sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
+                sx={{ color: theme.palette.secondary[300], fontSize: "35px" }}
               />
             </Button>
             <Menu
@@ -119,6 +112,9 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem onClick={handleClose}>Log Out</MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="C:\Users\ASUS\salma\client\src\scenes\profile">Profile</Link>
+                </MenuItem>
             </Menu>
           </FlexBetween>
         </FlexBetween>

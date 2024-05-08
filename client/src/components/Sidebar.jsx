@@ -25,7 +25,7 @@ import {
   TodayOutlined,
   CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
-  TrendingUpOutlined,
+  //TrendingUpOutlined,
   PieChartOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -86,8 +86,8 @@ const navItems = [
     icon: <AdminPanelSettingsOutlined />,
   },
   {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
+    text: "SuperAdmin",
+    icon: <AdminPanelSettingsOutlined />,
   },
 ];
 
@@ -131,7 +131,7 @@ const Sidebar = ({
               <FlexBetween color={Theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
                   <Typography variant="h4" fontWeight="bold">
-                    ECOMVISION
+                    TLS
                   </Typography>
                 </Box>
                 {!isNonMobile && (

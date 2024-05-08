@@ -10,7 +10,7 @@ const OverviewChart = ({ isDashboard = false, view }) => {
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
     if (!data) return [];
 
-    const { monthlyData } = data ||{};
+    const { monthlyData } = data;
     const totalSalesLine = {
       id: "totalSales",
       color: theme.palette.secondary.main,
@@ -22,7 +22,7 @@ const OverviewChart = ({ isDashboard = false, view }) => {
       data: [],
     };
 
-    Object.values(monthlyData || {}).reduce(
+    Object.values(monthlyData).reduce(
       (acc, { month, totalSales, totalUnits }) => {
         const curSales = acc.sales + totalSales;
         const curUnits = acc.units + totalUnits;
@@ -98,7 +98,7 @@ const OverviewChart = ({ isDashboard = false, view }) => {
       axisRight={null}
       axisBottom={{
         format: (v) => {
-          if (isDashboard) return v?.slice(0, 3);
+          if (isDashboard) return v.slice(0, 3);
           return v;
         },
         orient: "bottom",
