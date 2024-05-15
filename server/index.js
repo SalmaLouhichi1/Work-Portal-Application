@@ -11,6 +11,11 @@ import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 import signupRoutes from "./routes/Signup.js";
 import loginRoutes from "./routes/Login.js";
+import authenticatedRoutes from "./routes/Authenticated.js";
+import receptionsRoutes from "./routes/Receptions.js";
+import manufactureRoutes from "./routes/Manufacture.js";
+import expeditionRoutes from "./routes/Expedition.js";
+
 
 
 /* Data Import */
@@ -20,7 +25,10 @@ import ProductStat from './models/ProductStat.js';
 import Transaction from './models/Transaction.js';
 import OverallStat from './models/OverallStat.js';
 import AffiliateStat from './models/AffiliateStat.js';
-import { dataUser, dataProduct, dataProductStat, dataTransaction, dataOverallStat, dataAffiliateStat } from "./data/index.js";
+import { dataUser, dataProduct, dataProductStat, dataTransaction, dataOverallStat, dataAffiliateStat, dataReceptions, dataManufacture, dataExpedition } from "./data/index.js";
+import Receptions from './models/Receptions.js';
+import Manufacture from './models/Manufacture.js';
+import Expedition from './models/Expedition.js';
 
 
 /* CONFIGURATION*/ 
@@ -47,6 +55,10 @@ app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 app.use("/user", signupRoutes);
 app.use("/auth", loginRoutes);
+app.use("/api", authenticatedRoutes);
+app.use("/receptions", receptionsRoutes);
+app.use("/manufacture", manufactureRoutes);
+app.use("/expedition", expeditionRoutes);
 
 
 // Define a route handler for the root path
@@ -69,4 +81,7 @@ mongoose.connect(process.env.MONGO_URL, {
     //ProductStat.insertMany(dataProductStat);
     //Transaction.insertMany(dataTransaction);
     //User.insertMany(dataUser);
+    //Receptions.insertMany(dataReceptions);
+    //Manufacture.insertMany(dataManufacture);
+    //Expedition.insertMany(dataExpedition);
 }).catch((error) => console.log(`${error} did not connect`));

@@ -33,18 +33,27 @@ const Login = () => {
         body: JSON.stringify(FormData),
       });
       const result = await response.json();
-      if (result.user._id) { // Check if user._id exists
-        navigate("/dashboard");
-        const user = JSON.stringify(result.user);
-        localStorage.setItem("user", user);
-        localStorage.setItem("token", result.token);
+      console.log("Login result:", result); // Log the result object
+      if (response.ok) {
+        // Check if response status is ok
+        if (result.user) {
+          navigate("/dashboard");
+          const user = JSON.stringify(result.user);
+          localStorage.setItem("user", user);
+          localStorage.setItem("token", result.token);
+        } else {
+          console.error("Sign IN Failed");
+        }        
       } else {
-        console.error("Sign In Failed");
+        // Handle non-200 response status
+        console.error("Error during login:", result.message);
       }
     } catch (error) {
-      console.error(error.message);
+      // Handle network or other errors
+      console.error("Error during login:", error.message);
     }
   };
+  
   
 
   const handleSignUpClick = () => {
@@ -88,7 +97,7 @@ const Login = () => {
                     id="password"
                     label="password"
                     name="password"
-                    autoComplete="current-password"
+                    autoComplete="password"
                     value={FormData.password}
                     onChange={handleInputChange}
                   />
@@ -104,7 +113,7 @@ const Login = () => {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link variant="body2" onClick={handleSignUpClick}>
-                    {"Don't Have an Account? Sign UP"}
+                    Don't Have an Account? Sign UP 
                   </Link>
                 </Grid>
               </Grid>

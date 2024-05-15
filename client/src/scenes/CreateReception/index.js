@@ -1,25 +1,25 @@
-import { ThemeProvider } from "@emotion/react";
-import { createTheme, Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Link, Select, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+//import { ThemeProvider } from "@emotion/react";
+import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const defaultTheme = createTheme();
-const Signup = () => {
+
+
+const CreateReception = () => {
 
   const navigate = useNavigate();
 
   const [FormData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    city: "",
-    state: "",
-    country: "",
-    occupation:"",
-    phoneNumber: "",
-    transactions: "",
-    role: "admin", // Set the default value to "admin"
+    OFnumber: "",
+    RequestDate: "",
+    ExpectedDeliveryDate: "",
+    RemainingQuantityToBeReceived: "",
+    QuantityShipped: "",
+    QuantityStillToBeDelivered: "",
+    Article:"",
+    Maker: "",
+    Country: "",
   });
 
   const handleInputChange = (event) => {
@@ -33,7 +33,7 @@ const Signup = () => {
   const handleSubmit = async (e) =>{
     e.preventDefault(); // Prevent default form submission
     try{
-      const response = await fetch("http://localhost:5001/user/register", {
+      const response = await fetch("http://localhost:5001/receptions/createReception", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,23 +42,21 @@ const Signup = () => {
       });
       const result = await response.json();
       if (response.status === 201) { // Check if the response status is 201 (created)
-        navigate("/");
+        navigate("/receptions");
+      console.log("Reception creation success");
       } else {
-        console.error("Sign Up Failed:", result.message); // Log the error message from the server
+        console.error("Reception creation Failed:", result.message); // Log the error message from the server
       }
     } catch(error){
-      console.error("Error during signup:", error.message);
+      console.error("Error during creation:", error.message);
     }
   };
 
 
-  const handleSignInClick = () => {
-    navigate("/");
-  };
 
   return(
     <>
-      <ThemeProvider theme={defaultTheme}>
+      
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box 
@@ -73,20 +71,20 @@ const Signup = () => {
               <LockOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign Up
+              Create a Reception
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:3}}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="given-name"
-                    name="name"
+                    autoComplete="given-OFnumber"
+                    name="OFnumber"
                     required
                     fullWidth
-                    id="name"
-                    label="Full Name"
+                    id="OFnumber"
+                    label="OF number"
                     autoFocus
-                    value={FormData.name}
+                    value={FormData.OFnumber}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -94,11 +92,11 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                    value={FormData.email}
+                    id="RequestDate"
+                    label="Request Date"
+                    name="RequestDate"
+                    autoComplete="RequestDate"
+                    value={FormData.RequestDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -106,11 +104,11 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="city"
-                    label="city"
-                    name="city"
-                    autoComplete="city"
-                    value={FormData.city}
+                    id="ExpectedDeliveryDate"
+                    label="Expected Delivery Date"
+                    name="ExpectedDeliveryDate"
+                    autoComplete="ExpectedDeliveryDate"
+                    value={FormData.ExpectedDeliveryDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -118,11 +116,11 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="state"
-                    label="state"
-                    name="state"
-                    autoComplete="state"
-                    value={FormData.state}
+                    id="RemainingQuantityToBeReceived"
+                    label="Remaining Quantity To Be Received"
+                    name="RemainingQuantityToBeReceived"
+                    autoComplete="RemainingQuantityToBeReceived"
+                    value={FormData.RemainingQuantityToBeReceived}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -130,11 +128,11 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="country"
-                    label="country"
-                    name="country"
-                    autoComplete="country"
-                    value={FormData.country}
+                    id="QuantityShipped"
+                    label="Quantity Shipped"
+                    name="QuantityShipped"
+                    autoComplete="QuantityShipped"
+                    value={FormData.QuantityShipped}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -142,11 +140,11 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="occupation"
-                    label="occupation"
-                    name="occupation"
-                    autoComplete="occupation"
-                    value={FormData.occupation}
+                    id="QuantityStillToBeDelivered"
+                    label="Quantity Still To Be Delivered"
+                    name="QuantityStillToBeDelivered"
+                    autoComplete="QuantityStillToBeDelivered"
+                    value={FormData.QuantityStillToBeDelivered}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -154,52 +152,37 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
-                    id="phoneNumber"
-                    label="phoneNumber"
-                    name="phoneNumber"
-                    autoComplete="phoneNumber"
-                    value={FormData.phoneNumber}
+                    id="Article"
+                    label="Article"
+                    name="Article"
+                    autoComplete="Article"
+                    value={FormData.Article}
                     onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    id="transactions"
-                    label="transactions"
-                    name="transactions"
-                    autoComplete="transactions"
-                    value={FormData.transactions}
+                    id="Maker"
+                    label="Maker"
+                    name="Maker"
+                    autoComplete="Maker"
+                    value={FormData.Maker}
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Select
-                    required
-                    fullWidth
-                    id="role"
-                    labelId ="role-label"
-                    name="role"
-                    value={FormData.role}
-                    onChange={handleInputChange}
-                  >
-                    <MenuItem value="admin">Admin</MenuItem>
-                    <MenuItem value="superadmin">Super Admin</MenuItem>
-                    <MenuItem value="user">User</MenuItem>
-                  </Select>
-                </Grid>
-                
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    id="password"
-                    label="password"
-                    name="password"
-                    autoComplete="password"
-                    value={FormData.password}
+                    id="Country"
+                    label="Country"
+                    name="Country"
+                    autoComplete="Country"
+                    value={FormData.Country}
                     onChange={handleInputChange}
                   />
-                </Grid> 
+                </Grid>
+
               </Grid>
               <Button
                 type="submit"
@@ -207,21 +190,14 @@ const Signup = () => {
                 variant="contained"
                 sx={{mt: 3, mb:2}}
               >
-                Sign UP
+                Create
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link variant="body2" onClick={handleSignInClick}>
-                    Already Have An Account? SIGN IN 
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Container>
-      </ThemeProvider>
+      
     </>
   )
 };
 
-export default Signup;
+export default CreateReception;

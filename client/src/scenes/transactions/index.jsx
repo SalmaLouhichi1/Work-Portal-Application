@@ -9,17 +9,17 @@ const Transactions = () => {
   const theme = useTheme();
 
   // values to be sent to the backend
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
-  const [sort, setSort] = useState({});
-  const [search, setSearch] = useState("");
+  //const [page, setPage] = useState(0);
+  //const [pageSize, setPageSize] = useState(20);
+  //const [sort, setSort] = useState({});
+  //const [search, setSearch] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
   const { data, isLoading } = useGetTransactionsQuery({
-    page,
-    pageSize,
-    sort: JSON.stringify(sort),
-    search,
+    page: 1, // Initial page
+    pageSize: 20, // Initial pageSize
+    sort: {}, // Initial sort
+    search: searchInput,
   });
 
   const columns = [
@@ -84,24 +84,18 @@ const Transactions = () => {
         }}
       >
         <DataGrid
+          getRowId={(row) => row._id} // Assuming _id is the unique identifier for each row
           loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={(data && data.transactions) || []}
+          rows={data?.transactions || []}
           columns={columns}
-          rowCount={(data && data.total) || 0}
+          rowCount={data?.total || 0}
           rowsPerPageOptions={[20, 50, 100]}
           pagination
-          page={page}
-          pageSize={pageSize}
-          paginationMode="server"
-          sortingMode="server"
-          onPageChange={(newPage) => setPage(newPage)}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          onSortModelChange={(newSortModel) => setSort(...newSortModel)}
+          onPageChange={(newPage) => console.log(newPage)}
+          onPageSizeChange={(newPageSize) => console.log(newPageSize)}
+          onSortModelChange={(newSortModel) => console.log(newSortModel)}
           components={{ Toolbar: DataGridCustomToolbar }}
-          componentsProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
-          }}
+          componentsProps={{ toolbar: { searchInput, setSearchInput } }}
         />
       </Box>
     </Box>

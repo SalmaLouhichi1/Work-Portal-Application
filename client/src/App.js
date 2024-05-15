@@ -18,7 +18,14 @@ import Admin from "scenes/admin";
 import SuperAdmin from "scenes/superadmin";
 import Login from "scenes/login/Login.js";
 import Signup from "scenes/signup/Signup.js";
-//import profile from "scenes/profile/profile.jsx";
+import Profile from "scenes/profile/Profile";
+import Receptions from "scenes/receptions";
+import Manufacture from "scenes/manufacture";
+import Expedition from "scenes/expedition";
+import CreateExpedition from "scenes/CreateExpedition";
+import CreateManufacture from "scenes/CreateManufacture";
+import CreateReception from "scenes/CreateReception";
+import UpdateExpedition from "scenes/updateExpedition";
 
 
 
@@ -46,7 +53,14 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/superadmin" element={<SuperAdmin />} />
-              <Route path="/profile" element={<profile />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/receptions" element={<Receptions />} />
+              <Route path="/manufacture" element={<Manufacture />} />
+              <Route path="/expedition" element={<Expedition />} />
+              <Route path="/createExpedition" element={<CreateExpedition />} />
+              <Route path="/createManufacture" element={<CreateManufacture />} />
+              <Route path="/createReception" element={<CreateReception />} />
+              <Route path="/updateExpedition/:id" element={<UpdateExpedition />} />
             </Route>
           </Routes>
         </ThemeProvider>

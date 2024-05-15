@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -11,9 +10,8 @@ import {
   ListItemText,
   Typography,
   useTheme,
-} from "@mui/material";
+} from '@mui/material';
 import {
-  SettingsOutlined,
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
@@ -25,83 +23,94 @@ import {
   TodayOutlined,
   CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
-  //TrendingUpOutlined,
   PieChartOutlined,
-} from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import FlexBetween from "./FlexBetween";
-import profileImage from "assets/profile.jpg";
+  FactoryOutlined,
+  FitbitOutlined,
+  CallReceivedOutlined,
+} from '@mui/icons-material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import FlexBetween from './FlexBetween';
+
 const navItems = [
   {
-    text: "Dashboard",
+    text: 'Dashboard',
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
+    text: 'Client Facing',
     icon: null,
   },
   {
-    text: "Products",
+    text: 'Receptions',
+    icon: <CallReceivedOutlined />,
+  },
+  {
+    text: 'Manufacture',
+    icon: <FactoryOutlined/>,
+  },
+  {
+    text: 'Expedition',
+    icon: <FitbitOutlined />,
+  },
+  {
+    text: 'Products',
     icon: <ShoppingCartOutlined />,
   },
   {
-    text: "Customers",
+    text: 'Customers',
     icon: <Groups2Outlined />,
   },
   {
-    text: "Transactions",
+    text: 'Transactions',
     icon: <ReceiptLongOutlined />,
   },
   {
-    text: "Geography",
+    text: 'Geography',
     icon: <PublicOutlined />,
   },
   {
-    text: "Sales",
+    text: 'Sales',
     icon: null,
   },
   {
-    text: "Overview",
+    text: 'Overview',
     icon: <PointOfSaleOutlined />,
   },
   {
-    text: "Daily",
+    text: 'Daily',
     icon: <TodayOutlined />,
   },
   {
-    text: "Monthly",
+    text: 'Monthly',
     icon: <CalendarMonthOutlined />,
   },
   {
-    text: "Breakdown",
+    text: 'Breakdown',
     icon: <PieChartOutlined />,
   },
   {
-    text: "Management",
+    text: 'Management',
     icon: null,
   },
   {
-    text: "Admin",
+    text: 'Admin',
     icon: <AdminPanelSettingsOutlined />,
   },
   {
-    text: "SuperAdmin",
+    text: 'SuperAdmin',
     icon: <AdminPanelSettingsOutlined />,
+  },
+  {
+    text: 'Profile',
+    icon: <HomeOutlined />,
   },
 ];
 
-const Sidebar = ({
-  user,
-  drawerWidth,
-  isSidebarOpen,
-  setIsSidebarOpen,
-  isNonMobile,
-}) => {
+const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) => {
   const { pathname } = useLocation();
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
   const navigate = useNavigate();
-  const Theme = useTheme();
+  const theme = useTheme();
 
   useEffect(() => {
     setActive(pathname.substring(1));
@@ -117,18 +126,18 @@ const Sidebar = ({
           anchor="left"
           sx={{
             width: drawerWidth,
-            "& .MuiDrawer-paper": {
-              color: Theme.palette.secondary[200],
-              backgroundColor: Theme.palette.background.alt,
-              boxSixing: "border-box",
-              borderWidth: isNonMobile ? 0 : "2px",
+            '& .MuiDrawer-paper': {
+              color: theme.palette.secondary[200],
+              backgroundColor: theme.palette.background.alt,
+              boxSixing: 'border-box',
+              borderWidth: isNonMobile ? 0 : '2px',
               width: drawerWidth,
             },
           }}
         >
           <Box width="100%">
             <Box m="1.5rem 2rem 2rem 3rem">
-              <FlexBetween color={Theme.palette.secondary.main}>
+              <FlexBetween color={theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
                   <Typography variant="h4" fontWeight="bold">
                     TLS
@@ -145,7 +154,7 @@ const Sidebar = ({
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
                   return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
+                    <Typography key={text} sx={{ m: '2.25rem 0 1rem 3rem' }}>
                       {text}
                     </Typography>
                   );
@@ -162,70 +171,34 @@ const Sidebar = ({
                       sx={{
                         backgroundColor:
                           active === lcText
-                            ? Theme.palette.secondary[300]
-                            : "transparent",
+                            ? theme.palette.secondary[300]
+                            : 'transparent',
                         color:
                           active === lcText
-                            ? Theme.palette.primary[600]
-                            : Theme.palette.secondary[100],
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
                       }}
                     >
                       <ListItemIcon
                         sx={{
-                          ml: "2rem",
+                          ml: '2rem',
                           color:
                             active === lcText
-                              ? Theme.palette.primary[600]
-                              : Theme.palette.secondary[200],
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
                         }}
                       >
                         {icon}
                       </ListItemIcon>
                       <ListItemText primary={text} />
                       {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        <ChevronRightOutlined sx={{ ml: 'auto' }} />
                       )}
                     </ListItemButton>
                   </ListItem>
                 );
               })}
             </List>
-          </Box>
-
-          <Box position="absolute" bottom="2rem">
-            <Divider />
-            <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem" >
-              <Box 
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="40px"
-                width="40px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-               /> 
-              <Box textAlign="left">
-              <Typography
-                  fontWeight="bold"
-                  fontSize="0.9rem"
-                  sx={{ color: Theme.palette.secondary[100] }}
-                >
-                  {user.name}
-                </Typography>
-                <Typography
-                  fontSize="0.8rem"
-                  sx={{ color: Theme.palette.secondary[200] }}
-                >
-                  {user.occupation}
-                </Typography>
-              </Box>
-              <SettingsOutlined
-                sx={{
-                  color: Theme.palette.secondary[300],
-                  fontSize: "25px ",
-                }}
-              />
-            </FlexBetween>
           </Box>
         </Drawer>
       )}

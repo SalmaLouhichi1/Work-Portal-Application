@@ -1,26 +1,27 @@
+
 import jwt from "jsonwebtoken";
-import { secretKey } from "../configuration/jwtConfig.js";
+import {secretKey} from "../configuration/jwtConfig.js";
 
 function generateToken(user) {
-    const payload ={
+    const payload = {
         id: user._id,
         email: user.email,
         role: user.role
     };
     return jwt.sign(payload, secretKey, {expiresIn: "1h"});
-}
+};
 
 function generateRefreshToken(user) {
-    const payload ={
+    const payload = {
         id: user._id,
         email: user.email,
         role: user.role
     };
-    return jwt.sign(payload, secretKey);
-}
+    return jwt.sign(payload, secretKey, {expiresIn: "7h"});
+};
 
-function verifyToken(token) {
+function verifyToken(token){
     return jwt.verify(token, secretKey);
 }
 
-export { generateToken, generateRefreshToken, verifyToken };
+export {generateToken, generateRefreshToken, verifyToken};

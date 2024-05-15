@@ -22,10 +22,11 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useUserDetails from "hooks/useUserDetails.js";
 
 
-const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
+const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -34,7 +35,20 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const navigate = useNavigate();
+  const { user, isLoading, isError } = useUserDetails();
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error occurred while fetching user data</div>;
+  
+  const handleLogout =() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  }
+
+
   return (
+    <>
     <AppBar
       sx={{
         position: "static",
@@ -87,19 +101,23 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
             >
 
               <Box textAlign="left">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="1.2rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  {user.name}
-                </Typography>
-                <Typography
-                  fontSize="1rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  {user.role}
-                </Typography>
+                {user && (
+                  <>
+                    <Typography
+                      fontWeight="bold"
+                      fontSize="1.2rem"
+                      sx={{ color: theme.palette.secondary[100]}}
+                    >
+                      {user.name}
+                    </Typography>
+                    <Typography
+                      fontSize="1rem"
+                      sx={{color: theme.palette.secondary[200]}}
+                    >
+                      {user.role}
+                    </Typography>
+                  </>
+                )}
               </Box>
               <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "35px" }}
@@ -109,17 +127,17 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               anchorEl={anchorEl}
               open={isOpen}
               onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              anchorOrigin={{ vertical:"bottom", horizontal:"center"}}
             >
-              <MenuItem onClick={handleClose}>Log Out</MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="C:\Users\ASUS\salma\client\src\scenes\profile">Profile</Link>
-                </MenuItem>
+              {/*<MenuItem component={Link} to="/profile">Profile</MenuItem>*/}
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>
         </FlexBetween>
       </Toolbar>
     </AppBar>
+    
+    </>
   );
 };
 
