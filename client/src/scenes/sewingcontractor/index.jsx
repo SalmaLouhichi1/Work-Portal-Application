@@ -1,13 +1,57 @@
-import React from "react";
-import { Box, useTheme } from "@mui/material";
-import { useGetSewingContractorQuery } from "state/api";
+import React, {useState, useEffect} from "react";
+import { Box, useTheme, IconButton, Snackbar, Alert } from "@mui/material";
+import { useGetSewingContractorQuery, useDeleteUserMutation } from "state/api";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
+import { useNavigate, useLocation } from "react-router-dom";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
 
 const SewingContractor = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { data, isLoading } = useGetSewingContractorQuery();
+
+  const [deleteUserMutation] = useDeleteUserMutation();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  // Check for success message in URL query params
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const successMessage = searchParams.get('message');
+
+  // Display success message if exists
+  useEffect(() => {
+    if (successMessage) {
+      setSnackbarMessage(successMessage);
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    }
+  }, [successMessage]);
+
+  const handleDelete = async (id) => {
+    try {
+      // Call the delete mutation with the expedition ID
+      await deleteUserMutation(id);
+      console.log('deleted successfully');
+      setSnackbarMessage('Expedition deleted successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error(error.message);
+      setSnackbarMessage('Error deleting expedition');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   const columns = [
     {
@@ -48,11 +92,42 @@ const SewingContractor = () => {
       headerName: "Role",
       flex: 0.5,
     },
+    {
+      field: "Delete",
+      headerName: "Delete",
+      flex: 0.5,
+      renderCell: (params) => (
+        <IconButton
+          aria-label="Delete"
+          onClick={() => handleDelete(params.row._id)}
+        >
+          <DeleteOutlineIcon />
+        </IconButton>
+      ),
+    },
+    {
+      field: "Update",
+      headerName: "Update",
+      flex: 0.5,
+      renderCell: (params) => (
+        <IconButton
+          aria-label="Update"
+          onClick={() => navigate(`/updateUser/${params.row._id}`)}
+        >
+          <UpdateOutlinedIcon />
+        </IconButton>
+      ),
+    },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="Sewing Contractors" subtitle="Managing Sewing Contractors list" />
+      <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '200%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <Box
         mt="40px"
         height="75vh"

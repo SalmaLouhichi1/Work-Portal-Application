@@ -94,16 +94,16 @@ export const api = createApi({
     }),
     deleteUser: build.mutation({
       query: (id) => ({
-        url: `user/user/${id}`,
+        url: `management/user/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['User'],
     }),
     updateUser: build.mutation({
       query: ({ id, updatedData }) => ({
-        url: `user/user/${id}`,
+        url: `management/user/${id}`,
         method: "PUT",
-        body: updatedData,
+        body: updatedData, 
       }),
       invalidatesTags: ["User"],
     }),
