@@ -15,21 +15,23 @@ import {
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
-  ShoppingCartOutlined,
   Groups2Outlined,
   ReceiptLongOutlined,
   PublicOutlined,
   PointOfSaleOutlined,
   TodayOutlined,
   CalendarMonthOutlined,
-  AdminPanelSettingsOutlined,
   PieChartOutlined,
   FactoryOutlined,
   FitbitOutlined,
   CallReceivedOutlined,
+  //TrendingUpOutlined,
+  ShoppingCartOutlined,
 } from '@mui/icons-material';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FlexBetween from './FlexBetween';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 const navItems = [
   {
@@ -37,7 +39,7 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: 'Client Facing',
+    text: 'Data Management',
     icon: null,
   },
   {
@@ -53,13 +55,14 @@ const navItems = [
     icon: <FitbitOutlined />,
   },
   {
-    text: 'Products',
-    icon: <ShoppingCartOutlined />,
+    text: 'Landering',
+    icon: <LocalLaundryServiceIcon/>,
   },
   {
-    text: 'Customers',
-    icon: <Groups2Outlined />,
+    text: "Products",
+    icon: <ShoppingCartOutlined />,
   },
+
   {
     text: 'Transactions',
     icon: <ReceiptLongOutlined />,
@@ -69,7 +72,7 @@ const navItems = [
     icon: <PublicOutlined />,
   },
   {
-    text: 'Sales',
+    text: 'Analysis',
     icon: null,
   },
   {
@@ -89,16 +92,28 @@ const navItems = [
     icon: <PieChartOutlined />,
   },
   {
-    text: 'Management',
+    text: 'Users Management',
     icon: null,
   },
   {
-    text: 'Admin',
-    icon: <AdminPanelSettingsOutlined />,
+    text: 'TLSAdmin',
+    icon: <Groups2Outlined />,
   },
   {
-    text: 'SuperAdmin',
-    icon: <AdminPanelSettingsOutlined />,
+    text: 'SewingContractor',
+    icon: <Groups2Outlined />,
+  },
+  {
+    text: 'WashingContractor',
+    icon: <Groups2Outlined />,
+  },
+  /*{
+    text: "Performance",
+    icon: <TrendingUpOutlined />,
+  },*/
+  {
+    text: "AddUser",
+    icon: <PersonAddAltIcon />,
   },
   {
     text: 'Profile',

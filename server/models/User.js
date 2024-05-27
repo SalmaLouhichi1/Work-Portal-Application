@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
+    ContractorName:{
+      type: String,
+      required: true,
+    },
     
     city: String,
     state: String,
@@ -28,8 +32,8 @@ const UserSchema = new mongoose.Schema(
     transactions: Array,
     role: {
       type: String,
-      enum: ["user", "admin", "superadmin"],
-      default: "admin",
+      enum: ["TLS admin", "Sewing Contractor", "Washing Contractor"],
+      default: "TLS admin",
     },
   },
   { timestamps: true }

@@ -5,30 +5,33 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import clientRoutes from "./routes/client.js";
-import generalRoutes from "./routes/general.js";
-import managementRoutes from "./routes/management.js";
+import clientRoutes from "./routes/Client.js";
+import generalRoutes from "./routes/General.js";
+import managementRoutes from "./routes/Management.js";
 import salesRoutes from "./routes/sales.js";
-import signupRoutes from "./routes/Signup.js";
+import adduserRoutes from "./routes/AddUser.js";
 import loginRoutes from "./routes/Login.js";
 import authenticatedRoutes from "./routes/Authenticated.js";
 import receptionsRoutes from "./routes/Receptions.js";
 import manufactureRoutes from "./routes/Manufacture.js";
 import expeditionRoutes from "./routes/Expedition.js";
+import landeringRoutes from "./routes/Landering.js";
+import productRoutes from "./routes/Product.js";
 
 
 
 /* Data Import */
+import { dataUser, dataProduct, dataProductStat, dataTransaction, dataOverallStat, dataAffiliateStat, dataReceptions, dataManufacture, dataExpedition, dataLandering } from "./data/index.js";
 import User from "./models/User.js";
 import Product from './models/Product.js';
 import ProductStat from './models/ProductStat.js';
 import Transaction from './models/Transaction.js';
 import OverallStat from './models/OverallStat.js';
 import AffiliateStat from './models/AffiliateStat.js';
-import { dataUser, dataProduct, dataProductStat, dataTransaction, dataOverallStat, dataAffiliateStat, dataReceptions, dataManufacture, dataExpedition } from "./data/index.js";
 import Receptions from './models/Receptions.js';
 import Manufacture from './models/Manufacture.js';
 import Expedition from './models/Expedition.js';
+import Landering from './models/Landering.js';
 
 
 /* CONFIGURATION*/ 
@@ -53,12 +56,14 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
-app.use("/user", signupRoutes);
+app.use("/user", adduserRoutes);
 app.use("/auth", loginRoutes);
 app.use("/api", authenticatedRoutes);
 app.use("/receptions", receptionsRoutes);
 app.use("/manufacture", manufactureRoutes);
 app.use("/expedition", expeditionRoutes);
+app.use("/landering", landeringRoutes);
+app.use("/products", productRoutes);
 
 
 // Define a route handler for the root path
@@ -80,8 +85,9 @@ mongoose.connect(process.env.MONGO_URL, {
     //Product.insertMany(dataProduct);
     //ProductStat.insertMany(dataProductStat);
     //Transaction.insertMany(dataTransaction);
-    //User.insertMany(dataUser);
+    //User.insertMany(dataUser); 
     //Receptions.insertMany(dataReceptions);
     //Manufacture.insertMany(dataManufacture);
     //Expedition.insertMany(dataExpedition);
+    //Landering.insertMany(dataLandering);
 }).catch((error) => console.log(`${error} did not connect`));

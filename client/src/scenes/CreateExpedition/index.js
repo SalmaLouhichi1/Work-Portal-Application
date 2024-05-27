@@ -1,10 +1,8 @@
 //import { ThemeProvider } from "@emotion/react";
-import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button } from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
+import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Snackbar, Alert } from "@mui/material";
+import { CreateOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
 
 const CreateExpedition = () => {
 
@@ -20,6 +18,10 @@ const CreateExpedition = () => {
     NumberOfItemsSent:"",
     Comment: "",
   });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
@@ -40,18 +42,26 @@ const CreateExpedition = () => {
         body: JSON.stringify(FormData),
       });
       const result = await response.json();
-      if (response.status === 201) { // Check if the response status is 201 (created)
-        navigate("/expedition");
+      if (response.status === 201) { 
+        setSnackbarMessage('Expedition Created successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+        navigate(`/expedition?message=${encodeURIComponent('Expedition created successfully')}`);
       console.log("Expedition creation success");
       } else {
-        console.error("Expedition creation Failed:", result.message); // Log the error message from the server
+        console.error("Expedition creation Failed:", result.message); 
+        setSnackbarMessage('Error creating expedition');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
       }
     } catch(error){
       console.error("Error during creation:", error.message);
     }
   };
 
-
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return(
     <>
@@ -67,7 +77,7 @@ const CreateExpedition = () => {
             }}
           >
             <Avatar key="avatar" sx={{m:1, bgcolor: 'secondary.main'}}>
-              <LockOutlined />
+              <CreateOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">
               Create an Expedition
@@ -182,6 +192,11 @@ const CreateExpedition = () => {
               </Button>
             </Box>
           </Box>
+          <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+              {snackbarMessage}
+           </Alert>
+         </Snackbar>
         </Container>
       
     </>

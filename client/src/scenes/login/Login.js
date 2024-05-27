@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { createTheme, Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Link} from "@mui/material";
+import { createTheme, Avatar, Box, Container, CssBaseline, TextField, Typography, Button} from "@mui/material";
 import React, { useState } from "react";
 import { LockOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -56,10 +56,6 @@ const Login = () => {
   
   
 
-  const handleSignUpClick = () => {
-    navigate("/register");
-  };
-
   return(
     <>
       <ThemeProvider theme={defaultTheme}>
@@ -110,13 +106,6 @@ const Login = () => {
               >
                 Sign In
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link variant="body2" onClick={handleSignUpClick}>
-                    Don't Have an Account? Sign UP 
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Container>

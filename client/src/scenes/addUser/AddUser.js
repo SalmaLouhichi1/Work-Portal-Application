@@ -1,26 +1,30 @@
-import { ThemeProvider } from "@emotion/react";
-import { createTheme, Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Link, Select, MenuItem } from "@mui/material";
+import { Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Select, MenuItem, FormControl, InputLabel, Snackbar, Alert  } from "@mui/material";
 import React, { useState } from "react";
-import { LockOutlined } from "@mui/icons-material";
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { useNavigate } from "react-router-dom";
 
-const defaultTheme = createTheme();
-const Signup = () => {
+//const defaultTheme = createTheme();
+const AddUser = () => {
 
-  const navigate = useNavigate();
 
   const [FormData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    ContractorName: "",
     city: "",
     state: "",
     country: "",
     occupation:"",
     phoneNumber: "",
     transactions: "",
-    role: "admin", // Set the default value to "admin"
+    role: "TLS Admin", 
   });
+
+  const navigate = useNavigate();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
@@ -33,7 +37,7 @@ const Signup = () => {
   const handleSubmit = async (e) =>{
     e.preventDefault(); // Prevent default form submission
     try{
-      const response = await fetch("http://localhost:5001/user/register", {
+      const response = await fetch("http://localhost:5001/user/adduser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,24 +45,28 @@ const Signup = () => {
         body: JSON.stringify(FormData),
       });
       const result = await response.json();
-      if (response.status === 201) { // Check if the response status is 201 (created)
-        navigate("/");
+      if (response.status === 201) { 
+        setSnackbarMessage('User Created successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+        navigate(`/dashboard?message=${encodeURIComponent('user created successfully')}`);
       } else {
-        console.error("Sign Up Failed:", result.message); // Log the error message from the server
+        console.error("Adding User Failed:", result.message);
+        setSnackbarMessage('Error creating User');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
       }
     } catch(error){
-      console.error("Error during signup:", error.message);
+      console.error("Error during adding user:", error.message);
     }
   };
 
-
-  const handleSignInClick = () => {
-    navigate("/");
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return(
     <>
-      <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box 
@@ -70,10 +78,10 @@ const Signup = () => {
             }}
           >
             <Avatar key="avatar" sx={{m:1, bgcolor: 'secondary.main'}}>
-              <LockOutlined />
+              <PersonAddAltIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign Up
+              Add User
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:3}}>
               <Grid container spacing={2}>
@@ -99,6 +107,18 @@ const Signup = () => {
                     name="email"
                     autoComplete="email"
                     value={FormData.email}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="ContractorName"
+                    label="Contractor Name"
+                    name="ContractorName"
+                    autoComplete="ContractorName"
+                    value={FormData.ContractorName}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -174,19 +194,21 @@ const Signup = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Select
+                  <FormControl fullWidth required>
+                    <InputLabel id="role-label">Role</InputLabel>
+                    <Select
                     required
                     fullWidth
                     id="role"
-                    labelId ="role-label"
                     name="role"
                     value={FormData.role}
                     onChange={handleInputChange}
                   >
-                    <MenuItem value="admin">Admin</MenuItem>
-                    <MenuItem value="superadmin">Super Admin</MenuItem>
-                    <MenuItem value="user">User</MenuItem>
+                    <MenuItem value="TLS admin">TLS Admin</MenuItem>
+                    <MenuItem value="Sewing Contractor">Sewing Contractor</MenuItem>
+                    <MenuItem value="Washing Contractor">Washing Contractor</MenuItem>
                   </Select>
+                  </FormControl>
                 </Grid>
                 
                 <Grid item xs={12} sm={6}>
@@ -207,21 +229,18 @@ const Signup = () => {
                 variant="contained"
                 sx={{mt: 3, mb:2}}
               >
-                Sign UP
+                Add User
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link variant="body2" onClick={handleSignInClick}>
-                    Already Have An Account? SIGN IN 
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
+          <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+              {snackbarMessage}
+           </Alert>
+         </Snackbar>
         </Container>
-      </ThemeProvider>
     </>
   )
 };
 
-export default Signup;
+export default AddUser;

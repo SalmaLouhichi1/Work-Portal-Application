@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Box, useTheme, IconButton, Tooltip, Snackbar, Alert } from "@mui/material";
-import { useGetManufactureQuery, useDeleteManufactureMutation } from "state/api";
+import { useGetLanderingQuery, useDeleteLanderingMutation } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from '@mui/icons-material/Add';
@@ -8,12 +8,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
 
-const Manufacture = () => {
+const Landering = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetManufactureQuery();
+  const { data, isLoading } = useGetLanderingQuery();
 
-  const [deleteManufactureMutation] = useDeleteManufactureMutation();
+  const [deleteLanderingMutation] = useDeleteLanderingMutation();
 
   console.log("data", data);
 
@@ -36,20 +36,19 @@ const Manufacture = () => {
   }, [successMessage]);
 
   const handleAdd = () => {
-    navigate("/CreateManufacture");
+    navigate("/CreateLandering");
   };
 
   const handleDelete = async (id) => {
     try {
-      // Call the delete mutation with the manufacture ID
-      await deleteManufactureMutation(id);
+      await deleteLanderingMutation(id);
       console.log('Deleted successfully');
-      setSnackbarMessage('Manufacture deleted successfully');
+      setSnackbarMessage('Landering deleted successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
     } catch (error) {
-      console.error('Error deleting manufacture:', error.message);
-      setSnackbarMessage('Error deleting manufacture');
+      console.error('Error deleting Landering:', error.message);
+      setSnackbarMessage('Error deleting Landering');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
@@ -66,8 +65,8 @@ const Manufacture = () => {
       flex: 1,
     },
     {
-      field: "OFnumber",
-      headerName: "OF Number",
+      field: "Articlenumber",
+      headerName: "Article Number",
       flex: 1,
     },
     {
@@ -81,18 +80,13 @@ const Manufacture = () => {
       flex: 1,
     },
     {
+        field: "QuantityReceived",
+        headerName: "Quantity Received",
+        flex: 1,
+      },
+    {
       field: "RemainingQuantityToBeReceived",
       headerName: "Remaining Quantity To Be Received",
-      flex: 1,
-    },
-    {
-      field: "QuantityShipped",
-      headerName: "Quantity Shipped",
-      flex: 1,
-    },
-    {
-      field: "QuantityStillToBeDelivered",
-      headerName: "Quantity Still To Be Delivered",
       flex: 1,
     },
     {
@@ -106,8 +100,13 @@ const Manufacture = () => {
         flex: 1,
       },
       {
-        field: "Country",
-        headerName: "Country",
+        field: "QuantityToBeShipped",
+        headerName: "Quantity To Be Shipped",
+        flex: 1,
+      },
+      {
+        field: "Comment",
+        headerName: "Comment",
         flex: 1,
       },
       {
@@ -130,7 +129,7 @@ const Manufacture = () => {
         renderCell: (params) => (
           <IconButton
             aria-label="Update"
-            onClick={() => navigate(`/updateManufacture/${params.row._id}`)}
+            onClick={() => navigate(`/updateLandering/${params.row._id}`)}
           >
             <UpdateOutlinedIcon />
           </IconButton>
@@ -140,7 +139,7 @@ const Manufacture = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="MANUFACTURE -Sewing Subcontractor" subtitle="Manufacture Management" />
+      <Header title="Landering -Washing Subcontractor" subtitle="Landering Management" />
       <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '200%' }}>
           {snackbarMessage}
@@ -151,7 +150,7 @@ const Manufacture = () => {
         justifyContent="flex-end"
         mb="1rem"
       >
-        <Tooltip title="Add Manufacture">
+        <Tooltip title="Add Landering">
           <IconButton onClick={handleAdd}>
             <AddIcon />
           </IconButton>
@@ -196,4 +195,4 @@ const Manufacture = () => {
   );
 };
 
-export default Manufacture;
+export default Landering;

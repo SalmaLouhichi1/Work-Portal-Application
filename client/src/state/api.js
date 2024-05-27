@@ -20,7 +20,7 @@ export const api = createApi({
   ],
   endpoints: (build) => ({
     getUserById: build.query({
-      query: (userId) => `api/user/${userId}`, // Include userId in the query
+      query: (userId) => `api/user/${userId}`, 
       providesTags: ["User"],
     }),
     getUser: build.query({
@@ -28,13 +28,41 @@ export const api = createApi({
       providesTags: ["User"],
     }),
     getProducts: build.query({
-      query: () => "client/products",
+      query: (id) => `products/products/${id}`,
       providesTags: ["Products"],
     }),
-    getCustomers: build.query({
-      query: () => "client/customers",
-      providesTags: ["Customers"],
+    deleteProduct: build.mutation({
+      query: (id) => ({
+        url: `products/products/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Products'],
     }),
+    updateProduct: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `products/products/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["Landering"],
+    }),
+    getProductById: build.query({
+      query: (id) => `products/product/${id}`, 
+      providesTags: ["product"],
+    }),
+    getProductStat: build.query({
+      query: (id) => `products/productstat/${id}`,
+      providesTags: ["ProductStat"],
+    }),
+    updateProductStat: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `products/productstat/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["ProductStat"],
+    }),
+    
     getTransactions: build.query({
       query: ({ page = 1, pageSize = 20, sort = {}, search = '' }) => ({
         url: "client/transactions",
@@ -51,14 +79,37 @@ export const api = createApi({
       query: () => "sales/sales",
       providesTags: ["Sales"],
     }),
-    getAdmins: build.query({
-      query: () => "management/admins",
-      providesTags: ["Admins"],
+    getTLSAdmins: build.query({
+      query: () => "management/tlsadmin",
+      providesTags: ["TLSAdmin"],
     }),
    
-    getSuperAdmins: build.query({
-      query: () => "management/superadmins",
-      providesTags: ["SuperAdmins"],
+    getWashingContractor: build.query({
+      query: () => "management/washingcontractor",
+      providesTags: ["WashingContractor"],
+    }),
+    getSewingContractor: build.query({
+      query: () => "management/sewingcontractor",
+      providesTags: ["SewingContractor"],
+    }),
+    deleteUser: build.mutation({
+      query: (id) => ({
+        url: `user/user/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    updateUser: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `user/user/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    getUserPerformance: build.query({
+      query: (id) => `management/performance/${id}`,
+      providesTags: ["Performance"],
     }),
     getDashboard: build.query({
       query: () => "general/dashboard",
@@ -76,14 +127,6 @@ export const api = createApi({
       query: () => "expedition/expedition",
       providesTags: ["Expedition"],
     }),
-    /* getupdateExpedition: build.mutation({
-      query: (rowId, updatedData) => ({
-        url: `expedition/${rowId}`,
-        method: 'PUT',
-        body: updatedData,
-      }),
-      invalidatesTags: ['Expedition'],
-    }), */
     deleteExpedition: build.mutation({
       query: (id) => ({
         url: `expedition/expedition/${id}`,
@@ -113,6 +156,57 @@ export const api = createApi({
       }),
       invalidatesTags: ["Expedition"],
     }),
+    updateManufacture: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `manufacture/manufacture/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["Manufacture"],
+    }),
+    updateReceptions: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `receptions/receptions/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["Receptions"],
+    }),
+    getReceptionById: build.query({
+      query: (id) => `receptions/receptions/${id}`, 
+      providesTags: ["Reception"],
+    }),
+    getManufactureById: build.query({
+      query: (id) => `manufacture/manufacture/${id}`, 
+      providesTags: ["Manufacture"],
+    }),
+    getExpeditionById: build.query({
+      query: (id) => `expedition/expedition/${id}`, 
+      providesTags: ["Expedition"],
+    }),
+    getLandering: build.query({
+      query: () => "landering/landering",
+      providesTags: ["Landering"],
+    }),
+    deleteLandering: build.mutation({
+      query: (id) => ({
+        url: `landering/landering/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Landering'],
+    }),
+    updateLandering: build.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `landering/landering/${id}`,
+        method: "PUT",
+        body: updatedData,
+      }),
+      invalidatesTags: ["Landering"],
+    }),
+    getLanderingById: build.query({
+      query: (id) => `landering/landering/${id}`, 
+      providesTags: ["Landering"],
+    }),
   }),
 });
 
@@ -120,19 +214,35 @@ export const {
   useGetUserByIdQuery, 
   useGetUserQuery,
   useGetProductsQuery,
-  useGetCustomersQuery,
+  useGetTLSAdminsQuery,
+  useGetSewingContractorQuery,
+  useGetWashingContractorQuery,
+  useDeleteUserMutation,
+  useUpdateUserMutation,
   useGetTransactionsQuery,
   useGetGeographyQuery,
   useGetSalesQuery,
-  useGetAdminsQuery,
   useGetDashboardQuery,
-  useGetSuperAdminsQuery,
+  useGetUserPerformanceQuery,
   useGetReceptionsQuery,
   useGetManufactureQuery,
   useGetExpeditionQuery,
-  //useGetupdateExpeditionMutation,
   useDeleteExpeditionMutation,
   useDeleteReceptionMutation,
   useDeleteManufactureMutation,
   useUpdateExpeditionMutation,
+  useUpdateManufactureMutation,
+  useUpdateReceptionsMutation,
+  useGetReceptionByIdQuery,
+  useGetManufactureByIdQuery,
+  useGetExpeditionByIdQuery,
+  useGetLanderingQuery,
+  useGetLanderingByIdQuery,
+  useDeleteLanderingMutation,
+  useUpdateLanderingMutation,
+  useDeleteProductMutation,
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+  useGetProductStatQuery,
+  useUpdateProductStatMutation,
 } = api;

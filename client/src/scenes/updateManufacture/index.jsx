@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUpdateExpeditionMutation, useGetExpeditionByIdQuery } from 'state/api';
+import { useUpdateManufactureMutation, useGetManufactureByIdQuery } from 'state/api';
 import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, CircularProgress, Snackbar, Alert } from "@mui/material";
 import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
 
-const UpdateExpedition = () => {
+const UpdateManufacture = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: expedition, isLoading, isError } = useGetExpeditionByIdQuery(id);
-  const [updateExpeditionMutation] = useUpdateExpeditionMutation();
+  const { data: manufacture, isLoading, isError } = useGetManufactureByIdQuery(id);
+  const [updateManufactureMutation] = useUpdateManufactureMutation();
   const [formData, setFormData] = useState({
-    State: '',
-    DispatchDate: '',
-    ShippingNumber: '',
-    UpdatedDate: '',
-    TransportDate: '',
-    Destination: '',
-    NumberOfItemsSent: '',
-    Comment: ''
+    OFnumber: '',
+    RequestDate: '',
+    ExpectedDeliveryDate: '',
+    RemainingQuantityToBeReceived: '',
+    QuantityShipped: '',
+    QuantityStillToBeDelivered: '',
+    Article: '',
+    Maker: '',
+    Country: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -25,19 +26,20 @@ const UpdateExpedition = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
-    if (expedition) {
+    if (manufacture) {
       setFormData({
-        State: expedition.State || '',
-        DispatchDate: expedition.DispatchDate || '',
-        ShippingNumber: expedition.ShippingNumber || '',
-        UpdatedDate: expedition.UpdatedDate || '',
-        TransportDate: expedition.TransportDate || '',
-        Destination: expedition.Destination || '',
-        NumberOfItemsSent: expedition.NumberOfItemsSent || '',
-        Comment: expedition.Comment || ''
+        OFnumber: manufacture.OFnumber || '',
+        RequestDate: manufacture.RequestDate || '',
+        ExpectedDeliveryDate: manufacture.ExpectedDeliveryDate || '',
+        RemainingQuantityToBeReceived: manufacture.RemainingQuantityToBeReceived || '',
+        QuantityShipped: manufacture.QuantityShipped || '',
+        QuantityStillToBeDelivered: manufacture.QuantityStillToBeDelivered || '',
+        Article: manufacture.Article || '',
+        Maker: manufacture.Maker || '',
+        Country: manufacture.Country || ''
       });
     }
-  }, [expedition]);
+  }, [manufacture]);
 
   useEffect(() => {
     if (snackbarOpen) {
@@ -47,7 +49,6 @@ const UpdateExpedition = () => {
       return () => clearTimeout(timer);
     }
   }, [snackbarOpen]);
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -60,15 +61,15 @@ const UpdateExpedition = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await updateExpeditionMutation({ id, updatedData: formData });
-      console.log('Expedition updated successfully');
-      setSnackbarMessage('Expedition updated successfully');
+      await updateManufactureMutation({ id, updatedData: formData });
+      console.log('Manufacture updated successfully');
+      setSnackbarMessage('Reception updated successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-      navigate(`/expedition?message=${encodeURIComponent('Expedition updated successfully')}`);
+      navigate(`/manufacture?message=${encodeURIComponent('Manufacture updated successfully')}`);
     } catch (error) {
-      console.error('Error updating expedition', error.message);
-      setSnackbarMessage('Error updating expedition');
+      console.error('Error updating manufacture', error.message);
+      setSnackbarMessage('Error updating manufacture');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
@@ -79,8 +80,7 @@ const UpdateExpedition = () => {
   };
 
   if (isLoading) return <CircularProgress />;
-  if (isError) return <div>Error loading expedition data</div>;
-
+  if (isError) return <div>Error loading manufacture data</div>;
 
 
   return (
@@ -100,21 +100,21 @@ const UpdateExpedition = () => {
             <UpdateOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-            <h1>Update Expedition</h1>
+            <h1>Update Manufacture</h1>
             </Typography>
-            <p>Expedition ID: {id}</p>
+            <p>Manufacture ID: {id}</p>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:3}}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="given-State"
-                    name="State"
+                    name="OFnumber"
                     required
                     fullWidth
-                    id="State"
-                    label="State"
+                    id="OFnumber"
+                    label="OFnumber"
                     autoFocus
-                    value={formData.State}
+                    value={formData.OFnumber}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -122,11 +122,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="DispatchDate"
-                    label="Dispatch Date"
-                    name="DispatchDate"
-                    autoComplete="DispatchDate"
-                    value={formData.DispatchDate}
+                    id="RequestDate"
+                    label="Request Date"
+                    name="RequestDate"
+                    autoComplete="RequestDate"
+                    value={formData.RequestDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -134,11 +134,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="ShippingNumber"
-                    label="Shipping Number"
-                    name="ShippingNumber"
-                    autoComplete="ShippingNumber"
-                    value={formData.ShippingNumber}
+                    id="ExpectedDeliveryDate"
+                    label="Expected Delivery Date"
+                    name="ExpectedDeliveryDate"
+                    autoComplete="ExpectedDeliveryDate"
+                    value={formData.ExpectedDeliveryDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -146,11 +146,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="UpdatedDate"
-                    label="Updated Date"
-                    name="UpdatedDate"
-                    autoComplete="UpdatedDate"
-                    value={formData.UpdatedDate}
+                    id="RemainingQuantityToBeReceived"
+                    label="Remaining Quantity To Be Received"
+                    name="RemainingQuantityToBeReceived"
+                    autoComplete="RemainingQuantityToBeReceived"
+                    value={formData.RemainingQuantityToBeReceived}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -158,11 +158,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="TransportDate"
-                    label="Transport Date"
-                    name="TransportDate"
-                    autoComplete="TransportDate"
-                    value={formData.TransportDate}
+                    id="QuantityShipped"
+                    label="Quantity Shipped"
+                    name="QuantityShipped"
+                    autoComplete="QuantityShipped"
+                    value={formData.QuantityShipped}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -170,11 +170,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="Destination"
-                    label="Destination"
-                    name="Destination"
-                    autoComplete="Destination"
-                    value={formData.Destination}
+                    id="QuantityStillToBeDelivered"
+                    label="Quantity Still To Be Delivered"
+                    name="QuantityStillToBeDelivered"
+                    autoComplete="QuantityStillToBeDelivered"
+                    value={formData.QuantityStillToBeDelivered}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -182,22 +182,33 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="NumberOfItemsSent"
-                    label="Number Of Items Sent"
-                    name="NumberOfItemsSent"
-                    autoComplete="NumberOfItemsSent"
-                    value={formData.NumberOfItemsSent}
+                    id="Article"
+                    label="Article"
+                    name="Article"
+                    autoComplete="Article"
+                    value={formData.Article}
                     onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    id="Comment"
-                    label="Comment"
-                    name="Comment"
-                    autoComplete="Comment"
-                    value={formData.Comment}
+                    id="Maker"
+                    label="Maker"
+                    name="Maker"
+                    autoComplete="Maker"
+                    value={formData.Maker}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="Country"
+                    label="Country"
+                    name="Country"
+                    autoComplete="Country"
+                    value={formData.Country}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -223,4 +234,4 @@ const UpdateExpedition = () => {
   );
 };
 
-export default UpdateExpedition;
+export default UpdateManufacture;

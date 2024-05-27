@@ -1,25 +1,24 @@
-//import { ThemeProvider } from "@emotion/react";
 import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Snackbar, Alert } from "@mui/material";
-import { CreateOutlined } from "@mui/icons-material";
+import { LockOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
 
-const CreateReception = () => {
+const CreateLandering = () => {
 
   const navigate = useNavigate();
 
   const [FormData, setFormData] = useState({
-    OFnumber: "",
+    Articlenumber: "",
     RequestDate: "",
     ExpectedDeliveryDate: "",
+    QuantityReceived: "",
     RemainingQuantityToBeReceived: "",
-    QuantityShipped: "",
-    QuantityStillToBeDelivered: "",
     Article:"",
     Maker: "",
-    Country: "",
+    QuantityToBeShipped: "",
+    Comment: "",
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -37,7 +36,7 @@ const CreateReception = () => {
   const handleSubmit = async (e) =>{
     e.preventDefault(); // Prevent default form submission
     try{
-      const response = await fetch("http://localhost:5001/receptions/createReception", {
+      const response = await fetch("http://localhost:5001/landering/createLandering", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,15 +44,16 @@ const CreateReception = () => {
         body: JSON.stringify(FormData),
       });
       const result = await response.json();
-      if (response.status === 201) { 
-        setSnackbarMessage('Reception Created successfully');
+      if (response.status === 201) { // Check if the response status is 201 (created)
+        setSnackbarMessage('Landering Created successfully');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-        navigate(`/receptions?message=${encodeURIComponent('Reception created successfully')}`);
-      console.log("Reception creation success");
+        navigate(`/landering?message=${encodeURIComponent('Landering created successfully')}`);
+
+      console.log("Landering creation success");
       } else {
-        console.error("Reception creation Failed:", result.message); 
-        setSnackbarMessage('Error creating Reception');
+        console.error("Landering creation Failed:", result.message); 
+        setSnackbarMessage('Error creating landering');
         setSnackbarSeverity('error');
         setSnackbarOpen(true);
       }
@@ -65,7 +65,6 @@ const CreateReception = () => {
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
-
 
   return(
     <>
@@ -81,23 +80,23 @@ const CreateReception = () => {
             }}
           >
             <Avatar key="avatar" sx={{m:1, bgcolor: 'secondary.main'}}>
-              <CreateOutlined />
+              <LockOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Create a Reception
+              Create a Landering
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:3}}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="given-OFnumber"
-                    name="OFnumber"
+                    autoComplete="given-Articlenumber"
+                    name="Articlenumber"
                     required
                     fullWidth
-                    id="OFnumber"
-                    label="OF number"
+                    id="Articlenumber"
+                    label="Article number"
                     autoFocus
-                    value={FormData.OFnumber}
+                    value={FormData.Articlenumber}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -129,35 +128,23 @@ const CreateReception = () => {
                   <TextField
                     required
                     fullWidth
+                    id="QuantityReceived"
+                    label="Quantity Received"
+                    name="QuantityReceived"
+                    autoComplete="QuantityReceived"
+                    value={FormData.QuantityReceived}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
                     id="RemainingQuantityToBeReceived"
                     label="Remaining Quantity To Be Received"
                     name="RemainingQuantityToBeReceived"
                     autoComplete="RemainingQuantityToBeReceived"
                     value={FormData.RemainingQuantityToBeReceived}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="QuantityShipped"
-                    label="Quantity Shipped"
-                    name="QuantityShipped"
-                    autoComplete="QuantityShipped"
-                    value={FormData.QuantityShipped}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="QuantityStillToBeDelivered"
-                    label="Quantity Still To Be Delivered"
-                    name="QuantityStillToBeDelivered"
-                    autoComplete="QuantityStillToBeDelivered"
-                    value={FormData.QuantityStillToBeDelivered}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -187,11 +174,22 @@ const CreateReception = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    id="Country"
-                    label="Country"
-                    name="Country"
-                    autoComplete="Country"
-                    value={FormData.Country}
+                    id="QuantityToBeShipped"
+                    label="Quantity To Be Shipped"
+                    name="QuantityToBeShipped"
+                    autoComplete="QuantityToBeShipped"
+                    value={FormData.QuantityToBeShipped}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="Comment"
+                    label="Comment"
+                    name="Comment"
+                    autoComplete="Comment"
+                    value={FormData.Comment}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -218,4 +216,4 @@ const CreateReception = () => {
   )
 };
 
-export default CreateReception;
+export default CreateLandering;

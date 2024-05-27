@@ -69,4 +69,37 @@ const deleteReception = async (req, res) => {
   }
 };
 
-export { getReceptions, createReception, deleteReception };
+const updateReceptions = async (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  try {
+    // Find the reception by _id and update it with the provided data
+    const updatedReceptions = await Receptions.findByIdAndUpdate(id, updatedData, { new: true });
+    
+    if (!updatedReceptions) {
+      return res.status(404).json({ message: "Reception not found" });
+    }
+
+    res.status(200).json(updatedReceptions); // Respond with the updated reception
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // If there's an error, respond with an error message
+  }
+};
+
+const getReceptionById =async (req, res) =>{
+  try {
+    const { id } = req.params;
+    const reception = await Receptions.findById(id);
+    if (!reception) {
+      return res.status(404).json({ message: 'Reception not found' });
+    }
+    res.status(200).json(reception);
+  } catch (error) {
+    console.error('Error fetching reception by ID:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+export { getReceptions, createReception, deleteReception, updateReceptions, getReceptionById };

@@ -2,14 +2,12 @@ import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
   {
-    State: String,
-    SendDate: Date,
-    Comment: String,
-    UpdateDate: Date,
-    TypeOfTransport: String,
-    Destination: String,
-    NumberOfItemsSent: Number,
-    ShippingNumber: Number,
+    name: String,
+    price: Number,
+    description: String,
+    category: String,
+    rating: Number,
+    supply: Number,
   },
   { timestamps: true }
 );

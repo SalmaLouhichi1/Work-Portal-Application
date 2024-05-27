@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUpdateExpeditionMutation, useGetExpeditionByIdQuery } from 'state/api';
+import { useUpdateLanderingMutation, useGetLanderingByIdQuery } from 'state/api';
 import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, CircularProgress, Snackbar, Alert } from "@mui/material";
 import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
 
-const UpdateExpedition = () => {
+const UpdateLandering = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: expedition, isLoading, isError } = useGetExpeditionByIdQuery(id);
-  const [updateExpeditionMutation] = useUpdateExpeditionMutation();
+  const { data: landering, isLoading, isError } = useGetLanderingByIdQuery(id);
+  const [updateLanderingMutation] = useUpdateLanderingMutation();
   const [formData, setFormData] = useState({
-    State: '',
-    DispatchDate: '',
-    ShippingNumber: '',
-    UpdatedDate: '',
-    TransportDate: '',
-    Destination: '',
-    NumberOfItemsSent: '',
+    Articlenumber: '',
+    RequestDate: '',
+    ExpectedDeliveryDate: '',
+    QuantityReceived: '',
+    RemainingQuantityToBeReceived: '',
+    QuantityStillToBeDelivered: '',
+    Article: '',
+    Maker: '',
+    QuantityToBeShipped: '',
     Comment: ''
   });
 
@@ -25,19 +27,20 @@ const UpdateExpedition = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
-    if (expedition) {
+    if (landering) {
       setFormData({
-        State: expedition.State || '',
-        DispatchDate: expedition.DispatchDate || '',
-        ShippingNumber: expedition.ShippingNumber || '',
-        UpdatedDate: expedition.UpdatedDate || '',
-        TransportDate: expedition.TransportDate || '',
-        Destination: expedition.Destination || '',
-        NumberOfItemsSent: expedition.NumberOfItemsSent || '',
-        Comment: expedition.Comment || ''
+        Articlenumber: landering.Articlenumber || '',
+        RequestDate: landering.RequestDate || '',
+        ExpectedDeliveryDate: landering.ExpectedDeliveryDate || '',
+        QuantityReceived: landering.QuantityReceived || '',
+        RemainingQuantityToBeReceived: landering.RemainingQuantityToBeReceived || '',
+        Article: landering.Article || '',
+        Maker: landering.Maker || '',
+        QuantityToBeShipped: landering.QuantityToBeShipped || '',
+        Comment: landering.Comment || ''
       });
     }
-  }, [expedition]);
+  }, [landering]);
 
   useEffect(() => {
     if (snackbarOpen) {
@@ -47,7 +50,6 @@ const UpdateExpedition = () => {
       return () => clearTimeout(timer);
     }
   }, [snackbarOpen]);
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -60,15 +62,15 @@ const UpdateExpedition = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await updateExpeditionMutation({ id, updatedData: formData });
-      console.log('Expedition updated successfully');
-      setSnackbarMessage('Expedition updated successfully');
+      await updateLanderingMutation({ id, updatedData: formData });
+      console.log('Landering updated successfully');
+      setSnackbarMessage('Landering updated successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-      navigate(`/expedition?message=${encodeURIComponent('Expedition updated successfully')}`);
+      navigate(`/landering?message=${encodeURIComponent('Landering updated successfully')}`);
     } catch (error) {
-      console.error('Error updating expedition', error.message);
-      setSnackbarMessage('Error updating expedition');
+      console.error('Error updating Landering', error.message);
+      setSnackbarMessage('Error updating Landering');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
@@ -79,8 +81,7 @@ const UpdateExpedition = () => {
   };
 
   if (isLoading) return <CircularProgress />;
-  if (isError) return <div>Error loading expedition data</div>;
-
+  if (isError) return <div>Error loading Landering data</div>;
 
 
   return (
@@ -100,21 +101,21 @@ const UpdateExpedition = () => {
             <UpdateOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-            <h1>Update Expedition</h1>
+            <h1>Update Landering</h1>
             </Typography>
-            <p>Expedition ID: {id}</p>
+            <p>Landering ID: {id}</p>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:3}}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="given-State"
-                    name="State"
+                    autoComplete="given-Articlenumber"
+                    name="Articlenumber"
                     required
                     fullWidth
-                    id="State"
-                    label="State"
+                    id="Articlenumber"
+                    label="Article Number"
                     autoFocus
-                    value={formData.State}
+                    value={formData.Articlenumber}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -122,11 +123,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="DispatchDate"
-                    label="Dispatch Date"
-                    name="DispatchDate"
-                    autoComplete="DispatchDate"
-                    value={formData.DispatchDate}
+                    id="RequestDate"
+                    label="Request Date"
+                    name="RequestDate"
+                    autoComplete="RequestDate"
+                    value={formData.RequestDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -134,11 +135,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="ShippingNumber"
-                    label="Shipping Number"
-                    name="ShippingNumber"
-                    autoComplete="ShippingNumber"
-                    value={formData.ShippingNumber}
+                    id="ExpectedDeliveryDate"
+                    label="Expected Delivery Date"
+                    name="ExpectedDeliveryDate"
+                    autoComplete="ExpectedDeliveryDate"
+                    value={formData.ExpectedDeliveryDate}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -146,11 +147,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="UpdatedDate"
-                    label="Updated Date"
-                    name="UpdatedDate"
-                    autoComplete="UpdatedDate"
-                    value={formData.UpdatedDate}
+                    id="QuantityReceived"
+                    label="Quantity Received"
+                    name="QuantityReceived"
+                    autoComplete="QuantityReceived"
+                    value={formData.QuantityReceived}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -158,11 +159,11 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="TransportDate"
-                    label="Transport Date"
-                    name="TransportDate"
-                    autoComplete="TransportDate"
-                    value={formData.TransportDate}
+                    id="RemainingQuantityToBeReceived"
+                    label="Remaining Quantity To Be Received"
+                    name="RemainingQuantityToBeReceived"
+                    autoComplete="RemainingQuantityToBeReceived"
+                    value={formData.RemainingQuantityToBeReceived}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -170,23 +171,33 @@ const UpdateExpedition = () => {
                   <TextField
                     required
                     fullWidth
-                    id="Destination"
-                    label="Destination"
-                    name="Destination"
-                    autoComplete="Destination"
-                    value={formData.Destination}
+                    id="Article"
+                    label="Article"
+                    name="Article"
+                    autoComplete="Article"
+                    value={formData.Article}
                     onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
                     fullWidth
-                    id="NumberOfItemsSent"
-                    label="Number Of Items Sent"
-                    name="NumberOfItemsSent"
-                    autoComplete="NumberOfItemsSent"
-                    value={formData.NumberOfItemsSent}
+                    id="Maker"
+                    label="Maker"
+                    name="Maker"
+                    autoComplete="Maker"
+                    value={formData.Maker}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="QuantityToBeShipped"
+                    label="Quantity To Be Shipped"
+                    name="QuantityToBeShipped"
+                    autoComplete="QuantityToBeShipped"
+                    value={formData.QuantityToBeShipped}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -223,4 +234,4 @@ const UpdateExpedition = () => {
   );
 };
 
-export default UpdateExpedition;
+export default UpdateLandering;

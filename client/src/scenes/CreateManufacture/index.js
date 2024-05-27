@@ -1,6 +1,6 @@
 //import { ThemeProvider } from "@emotion/react";
-import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button } from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
+import {  Avatar, Box, Container, CssBaseline, Grid, TextField, Typography, Button, Snackbar, Alert } from "@mui/material";
+import { CreateOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,10 @@ const CreateManufacture = () => {
     Country: "",
   });
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const handleInputChange = (event) => {
     const {name, value} = event.target;
     setFormData({
@@ -41,15 +45,25 @@ const CreateManufacture = () => {
         body: JSON.stringify(FormData),
       });
       const result = await response.json();
-      if (response.status === 201) { // Check if the response status is 201 (created)
-        navigate("/manufacture");
+      if (response.status === 201) { 
+        setSnackbarMessage('Manufacture Created successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+        navigate(`/manufacture?message=${encodeURIComponent('Manufacture created successfully')}`);
       console.log("Manufacture creation success");
       } else {
-        console.error("Manufacture creation Failed:", result.message); // Log the error message from the server
+        console.error("Manufacture creation Failed:", result.message); 
+        setSnackbarMessage('Error creating manufacture');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
       }
     } catch(error){
       console.error("Error during creation:", error.message);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
 
@@ -68,7 +82,7 @@ const CreateManufacture = () => {
             }}
           >
             <Avatar key="avatar" sx={{m:1, bgcolor: 'secondary.main'}}>
-              <LockOutlined />
+              <CreateOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">
               Create a Manufacture
@@ -194,6 +208,11 @@ const CreateManufacture = () => {
               </Button>
             </Box>
           </Box>
+          <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+              {snackbarMessage}
+           </Alert>
+         </Snackbar>
         </Container>
       
     </>

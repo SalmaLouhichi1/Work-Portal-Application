@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from "react";
 import {
   Box,
   Card,
@@ -10,30 +10,81 @@ import {
   Rating,
   useTheme,
   useMediaQuery,
+  IconButton, 
+  Tooltip,
+  Snackbar, 
+  Alert,
 } from "@mui/material";
 import Header from "components/Header";
-import { useGetProductsQuery } from "state/api";
+import { useGetProductsQuery, useDeleteProductMutation } from "state/api";
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate, useLocation } from "react-router-dom";
+import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const Product = ({
   _id,
-  name,
-  description,
-  price,
-  rating,
-  category,
-  supply,
-  stat,
+  name = "N/A",
+  description = "No description available",
+  price = 0,
+  rating = 0,
+  category = "Unknown",
+  supply = 0,
+  stat = [{}], 
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const [deleteProductMutation] = useDeleteProductMutation();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  // Check for success message in URL query params
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const successMessage = searchParams.get('message');
+
+  // Display success message if exists
+  useEffect(() => {
+    if (successMessage) {
+      setSnackbarMessage(successMessage);
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    }
+  }, [successMessage]);
+
+  const handleDelete = async (_id) => {
+    try {
+      // Call the delete product with the product ID
+      await deleteProductMutation(_id);
+      console.log('Deleted successfully');
+      setSnackbarMessage('Product deleted successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error deleting product:', error.message);
+      setSnackbarMessage('Error deleting product');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
+  };
+  
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
+    
     <Card
       sx={{
         backgroundImage: "none",
         backgroundColor: theme.palette.background.alt,
         borderRadius: "0.55rem",
       }}
+      
     >
       <CardContent>
         <Typography
@@ -44,7 +95,7 @@ const Product = ({
           {category}
         </Typography>
         <Typography variant="h5" component="div">
-          {name}
+          {name} 
         </Typography>
         <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
           ${Number(price).toFixed(2)}
@@ -61,6 +112,22 @@ const Product = ({
         >
           See More
         </Button>
+        <IconButton
+            aria-label="Update"
+            onClick={() => navigate(`/updateProduct/${_id}`)}
+          >
+            <UpdateOutlinedIcon />
+          </IconButton>
+        <Tooltip title="Delete Product">
+          <IconButton onClick={() => handleDelete(_id)}>
+            <DeleteOutlineIcon />
+          </IconButton>
+        </Tooltip>
+        <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '200%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       </CardActions>
       <Collapse
         in={isExpanded}
@@ -74,10 +141,10 @@ const Product = ({
           <Typography>id: {_id}</Typography>
           <Typography>Supply Left: {supply}</Typography>
           <Typography>
-            Yearly Sales This Year: {stat.yearlySalesTotal}
+            Yearly Sales This Year: {stat.length >0 ? stat[0].yearlySalesTotal :0}
           </Typography>
           <Typography>
-            Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}
+            Yearly Units Sold This Year: {stat.length >0 ? stat[0].yearlyTotalSoldUnits :0}
           </Typography>
         </CardContent>
       </Collapse>
@@ -86,13 +153,57 @@ const Product = ({
 };
 
 const Products = () => {
-  const { data, isLoading } = useGetProductsQuery();
+  const { data = [], isLoading } = useGetProductsQuery(); // Added default value for data
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
+
+  console.log(data); // Add this line to check the data structure
+
+  const navigate = useNavigate();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  // Check for success message in URL query params
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const successMessage = searchParams.get('message');
+
+  // Display success message if exists
+  useEffect(() => {
+    if (successMessage) {
+      setSnackbarMessage(successMessage);
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    }
+  }, [successMessage]);
+
+  const handleAdd = () => {
+    navigate("/CreateProduct");
+  };
+
+  /**/
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="PRODUCTS" subtitle="See your list of products." />
-      {data || !isLoading ? (
+      <Header title="FINAL PRODUCTS" subtitle="See your list of products." />
+      <Snackbar open={snackbarOpen} autoHideDuration={10000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '200%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      <Tooltip title="Add Products">
+          <IconButton onClick={handleAdd}>
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
+        
+      {data.length > 0 || !isLoading ? ( // Added length check for data
         <Box
           mt="20px"
           display="grid"
@@ -104,6 +215,7 @@ const Products = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
+          
           {data.map(
             ({
               _id,
