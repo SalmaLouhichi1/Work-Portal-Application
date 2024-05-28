@@ -8,7 +8,7 @@ import morgan from 'morgan';
 import clientRoutes from "./routes/Client.js";
 import generalRoutes from "./routes/General.js";
 import managementRoutes from "./routes/Management.js";
-import salesRoutes from "./routes/sales.js";
+import salesRoutes from "./routes/Sales.js";
 import adduserRoutes from "./routes/AddUser.js";
 import loginRoutes from "./routes/Login.js";
 import authenticatedRoutes from "./routes/Authenticated.js";

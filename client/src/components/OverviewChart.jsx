@@ -2,10 +2,18 @@ import React, { useMemo } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { useGetSalesQuery } from "state/api";
+import { useNavigate } from "react-router-dom";
 
 const OverviewChart = ({ isDashboard = false, view }) => {
   const theme = useTheme();
-  const { data, isLoading } = useGetSalesQuery();
+  const navigate = useNavigate();
+  const result = useGetSalesQuery();
+  console.log(result);
+  const {data, isLoading, isError} =result;
+  if (isError){
+    navigate("/");
+  }
+  
 
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
     if (!data) return [];
