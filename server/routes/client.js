@@ -3,10 +3,11 @@ import {
   getTransactions,
   getGeography,
 } from "../controllers/client.js";
+import { checkRole } from "../utils/checkRole.js";
 
 const router = express.Router();
 
-router.get("/transactions", getTransactions);
-router.get("/geography", getGeography);
+router.get("/transactions", authenticateToken,checkRole('TLS admin') ,getTransactions);
+router.get("/geography", authenticateToken,checkRole('TLS admin') ,getGeography);
 
 export default router;
