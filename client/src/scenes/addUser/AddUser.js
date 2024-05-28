@@ -18,7 +18,7 @@ const AddUser = () => {
     occupation:"",
     phoneNumber: "",
     transactions: "",
-    role: "TLS Admin", 
+    role: "TLS admin", 
   });
 
   const navigate = useNavigate();

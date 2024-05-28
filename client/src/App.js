@@ -15,7 +15,7 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Login from "scenes/login/Login.js";
 import AddUser from "scenes/addUser/AddUser.js";
-import Profile from "scenes/profile/Profile";
+import Profile from "scenes/profile/profile";
 import Receptions from "scenes/receptions";
 import Manufacture from "scenes/manufacture";
 import Expedition from "scenes/expedition";
