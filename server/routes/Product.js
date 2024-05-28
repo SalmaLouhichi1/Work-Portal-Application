@@ -14,13 +14,13 @@ import { authenticateToken } from "../utils/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/products/:id", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,getProducts);
-router.put('/products/:id', authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,updateProduct);
-router.post("/createproduct", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,createProduct);
-router.delete('/products/:id', authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,deleteProduct);
-router.get("/product/:id", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,getProductById);
-router.get("/productstat/:productId", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,getProductStat);
-router.put("/productStat/:productId", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,updateProductStat);
+router.get("/products/:id", authenticateToken,getProducts);
+router.put('/products/:id', authenticateToken,updateProduct);
+router.post("/createproduct", authenticateToken,createProduct);
+router.delete('/products/:id', authenticateToken,deleteProduct);
+router.get("/product/:id", authenticateToken,getProductById);
+router.get("/productstat/:productId", authenticateToken,getProductStat);
+router.put("/productStat/:productId", authenticateToken,updateProductStat);
 
 
 export default router;

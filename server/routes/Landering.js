@@ -5,10 +5,10 @@ import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/landering', authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,getLandering);
-router.put('/landering/:id', authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,updateLandering);
-router.post("/createLandering", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,createLandering);
-router.delete('/landering/:id', authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,deleteLandering);
-router.get("/landering/:id", authenticateToken,checkRole('TLS admin', 'Washing Contractor') ,getLanderingById);
+router.get('/landering', authenticateToken ,getLandering);
+router.put('/landering/:id', authenticateToken ,updateLandering);
+router.post("/createLandering", authenticateToken ,createLandering);
+router.delete('/landering/:id', authenticateToken ,deleteLandering);
+router.get("/landering/:id", authenticateToken ,getLanderingById);
 
 export default router;

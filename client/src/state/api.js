@@ -76,7 +76,11 @@ export const api = createApi({
       providesTags: ["Geography"],
     }),
     getSales: build.query({
-      query: () => "sales/sales",
+      query: () => ({
+        url:"sales/sales",
+        mathod: "GET",
+        headers: {"Authorization":"Bearer " + localStorage.getItem("token")},
+      }),
       providesTags: ["Sales"],
     }),
     getTLSAdmins: build.query({

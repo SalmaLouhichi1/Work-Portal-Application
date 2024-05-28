@@ -5,9 +5,9 @@ import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/manufacture', authenticateToken,checkRole('TLS admin', 'Sewing Contractor') ,getManufacture);
-router.post("/createManufacture", authenticateToken,checkRole('TLS admin', 'Sewing Contractor') ,createManufacture);
-router.delete("/manufacture/:id", authenticateToken,checkRole('TLS admin', 'Sewing Contractor') ,deleteManufacture);
-router.put("/manufacture/:id", authenticateToken,checkRole('TLS admin', 'Sewing Contractor') ,updateManufacture);
-router.get("/manufacture/:id", authenticateToken,checkRole('TLS admin', 'Sewing Contractor') ,getManufactureById);
+router.get('/manufacture', authenticateToken,getManufacture);
+router.post("/createManufacture", authenticateToken,createManufacture);
+router.delete("/manufacture/:id", authenticateToken,deleteManufacture);
+router.put("/manufacture/:id", authenticateToken,updateManufacture);
+router.get("/manufacture/:id", authenticateToken,getManufactureById);
 export default router;

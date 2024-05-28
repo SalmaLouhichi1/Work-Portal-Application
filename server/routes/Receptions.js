@@ -5,10 +5,10 @@ import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/receptions', authenticateToken, checkRole('TLS admin') ,getReceptions);
-router.post("/createReception", authenticateToken,checkRole('TLS admin') ,createReception);
-router.delete("/receptions/:id", authenticateToken,checkRole('TLS admin') ,deleteReception);
-router.put("/receptions/:id", authenticateToken,checkRole('TLS admin') ,updateReceptions);
-router.get("/receptions/:id", authenticateToken,checkRole('TLS admin') ,getReceptionById);
+router.get('/receptions', authenticateToken, getReceptions);
+router.post("/createReception", authenticateToken,createReception);
+router.delete("/receptions/:id", authenticateToken,deleteReception);
+router.put("/receptions/:id", authenticateToken,updateReceptions);
+router.get("/receptions/:id", authenticateToken,getReceptionById);
 
 export default router;
