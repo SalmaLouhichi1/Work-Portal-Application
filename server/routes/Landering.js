@@ -1,6 +1,7 @@
 import express from 'express';
 import { createLandering, deleteLandering, getLandering, getLanderingById, updateLandering} from '../controllers/Landering.js';
 import { checkRole } from '../utils/checkRole.js';
+import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import { createManufacture, deleteManufacture, getManufacture, getManufactureById, updateManufacture } from '../controllers/Manufacture.js';
 import { checkRole } from '../utils/checkRole.js';
+import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 

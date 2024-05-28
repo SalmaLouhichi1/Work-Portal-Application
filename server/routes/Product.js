@@ -10,6 +10,7 @@ import {
   //createProductStat,
 } from "../controllers/Product.js";
 import { checkRole } from "../utils/checkRole.js";
+import { authenticateToken } from "../utils/authMiddleware.js";
 
 const router = express.Router();
 
