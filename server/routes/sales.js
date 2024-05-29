@@ -5,6 +5,6 @@ import { checkRole } from "../utils/checkRole.js";
 
 const router = express.Router();
 
-router.get("/sales",authenticateToken, getSales);
+router.get("/sales",authenticateToken, checkRole(['Sewing Contractor','TLS admin', 'Washing Contractor']), getSales);
 
 export default router;

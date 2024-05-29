@@ -4,9 +4,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
+import { useNavigate } from "react-router-dom";
 
 const Transactions = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // values to be sent to the backend
   //const [page, setPage] = useState(0);
@@ -15,12 +17,17 @@ const Transactions = () => {
   //const [search, setSearch] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
-  const { data, isLoading } = useGetTransactionsQuery({
+  /*const result = useGetTransactionsQuery();
+  console.log(result);*/
+  const { data, isLoading, isError } = useGetTransactionsQuery({
     page: 1, // Initial page
     pageSize: 20, // Initial pageSize
     sort: {}, // Initial sort
     search: searchInput,
   });
+  if(isError){
+    navigate("/dashboard");
+  }
 
   const columns = [
     {

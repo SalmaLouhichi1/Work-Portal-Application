@@ -31,7 +31,6 @@ import {
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FlexBetween from './FlexBetween';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 const navItems = [
   {
@@ -111,10 +110,6 @@ const navItems = [
     text: "Performance",
     icon: <TrendingUpOutlined />,
   },*/
-  {
-    text: "AddUser",
-    icon: <PersonAddAltIcon />,
-  },
   {
     text: 'Profile',
     icon: <HomeOutlined />,

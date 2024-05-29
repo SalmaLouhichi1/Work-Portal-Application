@@ -5,6 +5,6 @@ import { authenticateToken } from "../utils/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/adduser", addUser);
+router.post("/adduser",authenticateToken, checkRole(['TLS admin']), addUser);
 
 export default router;

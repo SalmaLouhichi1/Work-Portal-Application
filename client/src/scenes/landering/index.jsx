@@ -11,7 +11,12 @@ import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
 const Landering = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetLanderingQuery();
+  const result = useGetLanderingQuery();
+  console.log(result);
+  const {data, isLoading, isError} =result;
+  if (isError){
+    navigate("/dashboard");
+  }
 
   const [deleteLanderingMutation] = useDeleteLanderingMutation();
 

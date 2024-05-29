@@ -1,17 +1,20 @@
 import React, {useState, useEffect} from "react";
-import { Box, useTheme, IconButton, Snackbar, Alert } from "@mui/material";
+import { Box, useTheme, IconButton, Snackbar, Alert, Tooltip } from "@mui/material";
 import { useGetWashingContractorQuery, useDeleteUserMutation } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate, useLocation } from "react-router-dom";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
-
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 const WashingContractor = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetWashingContractorQuery();
+  const { data, isLoading, isError } = useGetWashingContractorQuery();
+  if(isError){
+    navigate("/dashboard");
+  }
   console.log("data", data);
 
   const [deleteUserMutation] = useDeleteUserMutation();
@@ -33,6 +36,9 @@ const WashingContractor = () => {
       setSnackbarOpen(true);
     }
   }, [successMessage]);
+  const handleAdd = () => {
+    navigate("/adduser");
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -130,6 +136,17 @@ const WashingContractor = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+      <Box
+      display="flex"
+      justifyContent="flex-end"
+      mb="1rem"
+      >
+        <Tooltip title="Add User">
+          <IconButton onClick={handleAdd}>
+            <PersonAddAltIcon/>
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Box
         mt="40px"
         height="75vh"

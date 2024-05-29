@@ -11,7 +11,12 @@ import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
 const Manufacture = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetManufactureQuery();
+  const result = useGetManufactureQuery();
+  console.log(result);
+  const {data, isLoading, isError} =result;
+  if (isError){
+    navigate("/dashboard");
+  }
 
   const [deleteManufactureMutation] = useDeleteManufactureMutation();
 

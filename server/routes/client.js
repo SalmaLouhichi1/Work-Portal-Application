@@ -8,7 +8,7 @@ import { authenticateToken } from "../utils/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/transactions", authenticateToken ,getTransactions);
-router.get("/geography", authenticateToken ,getGeography);
+router.get("/transactions", authenticateToken ,checkRole(['TLS admin']),getTransactions);
+router.get("/geography", authenticateToken ,checkRole(['TLS admin']),getGeography);
 
 export default router;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Box, useTheme, IconButton, Snackbar, Alert } from "@mui/material";
+import { Box, useTheme, IconButton, Snackbar, Alert, Tooltip } from "@mui/material";
 import { useGetSewingContractorQuery, useDeleteUserMutation } from "state/api";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "components/Header";
@@ -7,11 +7,15 @@ import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 const SewingContractor = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetSewingContractorQuery();
+  const { data, isLoading, isError } = useGetSewingContractorQuery();
+  if(isError){
+    navigate("/dashboard");
+  }
 
   const [deleteUserMutation] = useDeleteUserMutation();
 
@@ -32,6 +36,9 @@ const SewingContractor = () => {
       setSnackbarOpen(true);
     }
   }, [successMessage]);
+  const handleAdd = () => {
+    navigate("/adduser");
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -128,6 +135,17 @@ const SewingContractor = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+      <Box
+      display="flex"
+      justifyContent="flex-end"
+      mb="1rem"
+      >
+        <Tooltip title="Add User">
+          <IconButton onClick={handleAdd}>
+            <PersonAddAltIcon/>
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Box
         mt="40px"
         height="75vh"

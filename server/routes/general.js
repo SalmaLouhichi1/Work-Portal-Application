@@ -6,6 +6,6 @@ import { authenticateToken } from "../utils/authMiddleware.js";
 const router = express.Router();
 
 router.get("/user/:id", getUser);
-router.get("/dashboard",authenticateToken, getDashboardStats);
+router.get("/dashboard",authenticateToken, checkRole(['Sewing Contractor','TLS admin','Washing Contractor']), getDashboardStats);
 
 export default router;

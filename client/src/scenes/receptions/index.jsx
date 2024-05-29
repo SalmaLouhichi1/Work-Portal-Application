@@ -11,7 +11,12 @@ import AddIcon from '@mui/icons-material/Add';
 const Receptions = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetReceptionsQuery();
+  const result = useGetReceptionsQuery();
+  console.log(result);
+  const {data, isLoading, isError} =result;
+  if(isError){
+    navigate("/dashboard");
+  }
 
   const [deleteReceptionMutation] = useDeleteReceptionMutation();
   

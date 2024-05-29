@@ -4,10 +4,15 @@ import { useGetGeographyQuery } from "state/api";
 import Header from "components/Header";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoData } from "state/geoData";
+import { useNavigate } from "react-router-dom";
 
 const Geography = () => {
   const theme = useTheme();
-  const { data } = useGetGeographyQuery();
+  const navigate= useNavigate();
+  const { data,  isError } = useGetGeographyQuery();
+  if(isError){
+    navigate("/dashboard");
+  }
 
   return (
     <Box m="1.5rem 2.5rem">

@@ -153,23 +153,29 @@ const Product = ({
 };
 
 const Products = () => {
-  const { data = [], isLoading } = useGetProductsQuery(); // Added default value for data
+  const navigate = useNavigate();
+  const result = useGetProductsQuery(); 
+  console.log(result);
+  const { data = [], isLoading, isError }= result;
+  if (isError){
+    navigate("/dashboard");
+  }
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
-  console.log(data); // Add this line to check the data structure
+  console.log(data); //  check the data structure
 
-  const navigate = useNavigate();
+  
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // Check for success message in URL query params
+  
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);
