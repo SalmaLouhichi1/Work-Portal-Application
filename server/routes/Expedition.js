@@ -5,10 +5,10 @@ import { authenticateToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/expedition', authenticateToken ,getExpedition);
-router.put('/expedition/:id',authenticateToken ,updateExpedition);
-router.post("/createExpedition", authenticateToken ,createExpedition);
-router.delete('/expedition/:id', authenticateToken ,deleteExpedition);
-router.get("/expedition/:id", authenticateToken ,getexpeditionById);
+router.get('/expedition', authenticateToken, checkRole('Sewing Contractor') ,getExpedition);
+router.put('/expedition/:id',authenticateToken ,checkRole('Sewing Contractor') ,updateExpedition);
+router.post("/createExpedition", authenticateToken ,checkRole('Sewing Contractor') ,createExpedition);
+router.delete('/expedition/:id', authenticateToken ,checkRole('Sewing Contractor') ,deleteExpedition);
+router.get("/expedition/:id", authenticateToken ,checkRole('Sewing Contractor') ,getexpeditionById);
 
 export default router;

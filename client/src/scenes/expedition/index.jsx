@@ -12,7 +12,12 @@ import  UpdateOutlinedIcon  from "@mui/icons-material/UpdateOutlined";
 const Expedition = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetExpeditionQuery();
+  const result = useGetExpeditionQuery();
+  console.log(result);
+  const {data, isLoading, isError} = result;
+  if (isError){
+    navigate("/dashboard");
+  }
 
   const [deleteExpeditionMutation] = useDeleteExpeditionMutation();
   //const [updateExpeditionMutation] = useUpdateExpeditionMutation();
