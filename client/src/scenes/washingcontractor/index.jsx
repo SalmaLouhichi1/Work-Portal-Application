@@ -12,9 +12,7 @@ const WashingContractor = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetWashingContractorQuery();
-  if(isError){
-    navigate("/dashboard");
-  }
+  
   console.log("data", data);
 
   const [deleteUserMutation] = useDeleteUserMutation();
@@ -28,7 +26,14 @@ const WashingContractor = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the Washing Contractors page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to Washing Contractors page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);

@@ -14,9 +14,7 @@ const Manufacture = () => {
   const result = useGetManufactureQuery();
   console.log(result);
   const {data, isLoading, isError} =result;
-  if (isError){
-    navigate("/dashboard");
-  }
+  
 
   const [deleteManufactureMutation] = useDeleteManufactureMutation();
 
@@ -31,7 +29,14 @@ const Manufacture = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the manufacture page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to Manufacture page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);

@@ -14,9 +14,7 @@ const TLSAdmin = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetTLSAdminsQuery();
-  if(isError){
-    navigate("/dashboard");
-  }
+  
   const [deleteUserMutation] = useDeleteUserMutation();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -28,7 +26,15 @@ const TLSAdmin = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the TLS Admins page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to TLS Admins page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
+
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);

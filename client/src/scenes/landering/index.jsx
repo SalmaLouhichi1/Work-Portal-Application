@@ -14,9 +14,7 @@ const Landering = () => {
   const result = useGetLanderingQuery();
   console.log(result);
   const {data, isLoading, isError} =result;
-  if (isError){
-    navigate("/dashboard");
-  }
+  
 
   const [deleteLanderingMutation] = useDeleteLanderingMutation();
 
@@ -31,7 +29,15 @@ const Landering = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the landering page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to Landering page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
+
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);

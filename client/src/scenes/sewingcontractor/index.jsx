@@ -13,9 +13,7 @@ const SewingContractor = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetSewingContractorQuery();
-  if(isError){
-    navigate("/dashboard");
-  }
+  
 
   const [deleteUserMutation] = useDeleteUserMutation();
 
@@ -28,7 +26,15 @@ const SewingContractor = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  // Display success message if exists
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the Sewing Contractors page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to Sewing Contractors page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
+
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);

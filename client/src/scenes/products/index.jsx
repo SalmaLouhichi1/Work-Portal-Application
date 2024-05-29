@@ -157,9 +157,7 @@ const Products = () => {
   const result = useGetProductsQuery(); 
   console.log(result);
   const { data = [], isLoading, isError }= result;
-  if (isError){
-    navigate("/dashboard");
-  }
+  
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
   console.log(data); //  check the data structure
@@ -175,7 +173,15 @@ const Products = () => {
   const searchParams = new URLSearchParams(location.search);
   const successMessage = searchParams.get('message');
 
-  
+  useEffect(() => {
+    if (isError) {
+      setSnackbarMessage("You don't have access to the products page");
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      navigate(`/dashboard?message=${encodeURIComponent('Access to Products page is Forbidden')}`);
+    }
+  }, [isError, navigate]);
+
   useEffect(() => {
     if (successMessage) {
       setSnackbarMessage(successMessage);
